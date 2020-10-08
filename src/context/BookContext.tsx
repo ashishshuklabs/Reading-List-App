@@ -10,14 +10,14 @@ interface IContextDefault{
 export const BookContext = createContext<Partial<IContextDefault>>({});
 //React.FC type supports children by default
 const BookContextProvider: React.FC = ({children}) =>{
+    //Setup initial value of books state from local storage if key
+    //defined already. Else setup an empty book array.
     const [books, setBooks] = useState<IBook[]>(() =>{
         const localdata = localStorage.getItem('MyBooks');
-
         return localdata ? JSON.parse(localdata): [];
-        // {title:"The way of the warriors",author:"Tomcat tumpkins", id:"1"},
-        // {title:"The day of reckoning", author:"Lisa Ray", id:"2"}
 
     });
+    //Update local storage on re-render due to change in books array.
     useEffect(() => {
         localStorage.setItem('MyBooks', JSON.stringify(books));
     }, [books])
